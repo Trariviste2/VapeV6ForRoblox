@@ -1832,6 +1832,39 @@ run(function()
 end)
 
 run(function()
+    ToyAnimation = vape.Categories.Blatant:CreateModule({
+        Name = 'ToyAnimation',
+        Function = function(callback)
+            local packName = "Toy"
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            if callback then
+                -- Save Animate script for restoration
+                if character:FindFirstChild("Animate") then
+                    ToyAnimation.DefaultAnimate = character.Animate:Clone()
+                end
+
+                -- Set pack and run script
+                getgenv().pack = packName
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Mautiku/Mautiku/refs/heads/main/AnimationCHANGER.txt", true))()
+            else
+                -- Restore Animate script if previously saved
+                if ToyAnimation.DefaultAnimate then
+                    local old = character:FindFirstChild("Animate")
+                    if old then old:Destroy() end
+
+                    local restore = ToyAnimation.DefaultAnimate:Clone()
+                    restore.Parent = character
+                    restore.Disabled = false
+                end
+            end
+        end,
+        Tooltip = "Toggles Toy animation pack"
+    })
+end)
+																	
+run(function()
     MageAnimation = vape.Categories.Blatant:CreateModule({
         Name = 'MageAnimation',
         Function = function(callback)
