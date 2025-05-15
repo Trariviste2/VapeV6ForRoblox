@@ -1771,7 +1771,64 @@ end)
 run(function() 
 FlaglessHighjump = vape.Categories.Blatant:CreateModule({ Name = 'FlaglessHighjump', Function = function(callback) if callback then local player = game.Players.LocalPlayer local character = player.Character or player.CharacterAdded:Wait() local humanoid = character:WaitForChild("Humanoid") humanoid.UseJumpPower = true humanoid.JumpPower = 300 end end, Tooltip = 'Worst Anticheat LOL (uses jump power)' }) end)
 
+run(function()
+    local inputService = game:GetService("UserInputService")
+    local runService = game:GetService("RunService")
+    local lplr = game.Players.LocalPlayer
+    local vector = Vector3
 
+    local Velocity
+
+    InfiniteJump = vape.Categories.Blatant:CreateModule({
+        Name = 'InfiniteJump',
+        Function = function(callback)
+            if callback then
+                InfiniteJump:Clean(inputService.InputBegan:Connect(function(input, gameProcessed)
+                    if gameProcessed then return end
+                    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Space then
+                        while inputService:IsKeyDown(Enum.KeyCode.Space) do
+                            local PrimaryPart = lplr.Character and lplr.Character.PrimaryPart
+                            if entitylib.isAlive and PrimaryPart then
+                                PrimaryPart.Velocity = vector.new(PrimaryPart.Velocity.X, Velocity.Value, PrimaryPart.Velocity.Z)
+                            end
+                            task.wait()
+                        end
+                    end
+                end))
+
+                if inputService.TouchEnabled then
+                    local Jumping = false
+                    local JumpButton = lplr.PlayerGui:WaitForChild("TouchGui"):WaitForChild("TouchControlFrame"):WaitForChild("JumpButton")
+
+                    InfiniteJump:Clean(JumpButton.MouseButton1Down:Connect(function()
+                        Jumping = true
+                    end))
+
+                    InfiniteJump:Clean(JumpButton.MouseButton1Up:Connect(function()
+                        Jumping = false
+                    end))
+
+                    InfiniteJump:Clean(runService.RenderStepped:Connect(function()
+                        if Jumping and entitylib.isAlive then
+                            local PrimaryPart = lplr.Character and lplr.Character.PrimaryPart
+                            if PrimaryPart then
+                                PrimaryPart.Velocity = vector.new(PrimaryPart.Velocity.X, Velocity.Value, PrimaryPart.Velocity.Z)
+                            end
+                        end
+                    end))
+                end
+            end
+        end,
+        Tooltip = "Allows infinite jumping"
+    })
+
+    Velocity = InfiniteJump:CreateSlider({
+        Name = 'Velocity',
+        Min = 50,
+        Max = 300,
+        Default = 50
+    })
+end)
 
 															
 run(function()
