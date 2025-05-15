@@ -1771,8 +1771,8 @@ end)
 run(function()
 	
 	
-	400Highjump = vape.Categories.Blatant:CreateModule({({
-		Name = '400Highjump',
+	FlaglessHighjump = vape.Categories.Blatant:CreateModule({({
+		Name = 'FlaglessHighjumpHighjump',
 		Function = function(callback)
 			if callback then
 				old = bedwars.SwordController.isClickingTooFast
@@ -1784,7 +1784,7 @@ run(function()
 				bedwars.SwordController.isClickingTooFast = old
 			end
 		end,
-		Tooltip = 'Worst Anticheat LOL'
+		Tooltip = 'Worst Anticheat LOL (uses jump power)'
 	})
 end)
 															
