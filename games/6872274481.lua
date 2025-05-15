@@ -1771,60 +1771,7 @@ end)
 run(function() 
 FlaglessHighjump = vape.Categories.Blatant:CreateModule({ Name = 'FlaglessHighjump', Function = function(callback) if callback then local player = game.Players.LocalPlayer local character = player.Character or player.CharacterAdded:Wait() local humanoid = character:WaitForChild("Humanoid") humanoid.UseJumpPower = true humanoid.JumpPower = 205 end end, Tooltip = 'Worst Anticheat LOL (uses jump power)' }) end)
 
-run(function()
-    local Players = game:GetService("Players")
-    local LocalPlayer = Players.LocalPlayer
-    local animationId = "rbxassetid://4940563117"
 
-    SetEmote = vape.Categories.Blatant:CreateModule({
-        Name = 'SetEmote',
-        Function = function(callback)
-            if callback then
-                local function applyLoopingAnimation(character)
-                    local humanoid = character:WaitForChild("Humanoid")
-
-                    local animation = Instance.new("Animation")
-                    animation.AnimationId = animationId
-                    local mainAnim = humanoid:LoadAnimation(animation)
-                    mainAnim.Priority = Enum.AnimationPriority.Action4
-                    mainAnim.Looped = true
-                    mainAnim:Play()
-
-                    -- Keep overriding other animations
-                    task.spawn(function()
-                        while character.Parent do
-                            for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
-                                if track.Animation.AnimationId ~= animationId then
-                                    track:Stop()
-                                elseif not track.Looped then
-                                    track.Looped = true
-                                end
-                            end
-
-                            if not mainAnim.IsPlaying then
-                                mainAnim:Play()
-                            end
-
-                            task.wait(0.05)
-                        end
-                    end)
-                end
-
-                -- Apply on current character
-                if LocalPlayer.Character then
-                    applyLoopingAnimation(LocalPlayer.Character)
-                end
-
-                -- Reapply on respawn
-                LocalPlayer.CharacterAdded:Connect(function(char)
-                    applyLoopingAnimation(char)
-                end)
-            end
-        end,
-        Tooltip = "PistonWare 2025 real!1!1!1"
-    })
-end)
-																
 run(function()
     local inputService = game:GetService("UserInputService")
     local runService = game:GetService("RunService")
@@ -2246,7 +2193,76 @@ run(function()
 		Default = true
 	})
 end)
-	
+
+run(function()
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    local animationId = "rbxassetid://4940563117"
+    local activeTracks = {}
+    local respawnConnection
+
+    SetEmote = vape.Categories.Blatant:CreateModule({
+        Name = 'SetEmote',
+        Function = function(callback)
+            local function applyLoopingAnimation(character)
+                local humanoid = character:WaitForChild("Humanoid")
+                local animation = Instance.new("Animation")
+                animation.AnimationId = animationId
+                local mainAnim = humanoid:LoadAnimation(animation)
+
+                mainAnim.Priority = Enum.AnimationPriority.Action4
+                mainAnim.Looped = true
+                mainAnim:Play()
+                table.insert(activeTracks, mainAnim)
+
+                -- Watchdog to keep animation active
+                task.spawn(function()
+                    while SetEmote.Enabled and character and character.Parent do
+                        for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+                            if track.Animation.AnimationId ~= animationId then
+                                track:Stop()
+                            elseif not track.Looped then
+                                track.Looped = true
+                            end
+                        end
+                        if not mainAnim.IsPlaying then
+                            mainAnim:Play()
+                        end
+                        task.wait(0.05)
+                    end
+                end)
+            end
+
+            if callback then
+                -- Apply to current character
+                if LocalPlayer.Character then
+                    applyLoopingAnimation(LocalPlayer.Character)
+                end
+
+                -- Reapply on respawn
+                respawnConnection = LocalPlayer.CharacterAdded:Connect(function(char)
+                    applyLoopingAnimation(char)
+                end)
+            else
+                -- Stop all active animation tracks
+                for _, track in ipairs(activeTracks) do
+                    if track and track.IsPlaying then
+                        track:Stop()
+                    end
+                end
+                activeTracks = {}
+
+                -- Disconnect respawn handler
+                if respawnConnection then
+                    respawnConnection:Disconnect()
+                    respawnConnection = nil
+                end
+            end
+        end,
+        Tooltip = 'Looped emote animation'
+    })
+end)
+																						
 run(function()
 	local Mode
 	local Expand
