@@ -1768,8 +1768,8 @@ run(function()
 	})
 end)
 	
-run(function()
-	local old
+
+run(function()	
 	
 	Flagless 400 Highjump = vape.Categories.Blatant:CreateModule({({
 		Name = 'Flagless 400 Highjump',
