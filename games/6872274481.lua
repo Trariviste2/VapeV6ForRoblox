@@ -1768,25 +1768,10 @@ run(function()
 	})
 end)
 	
-run(function()
-	
-	
-	FlaglessHighjump = vape.Categories.Blatant:CreateModule({({
-		Name = 'FlaglessHighjumpHighjump',
-		Function = function(callback)
-			if callback then
-				old = bedwars.SwordController.isClickingTooFast
-				bedwars.SwordController.isClickingTooFast = function(self)
-					self.lastSwing = os.clock()
-					return false
-				end
-			else
-				bedwars.SwordController.isClickingTooFast = old
-			end
-		end,
-		Tooltip = 'Worst Anticheat LOL (uses jump power)'
-	})
-end)
+run(function() 
+FlaglessHighjump = vape.Categories.Blatant:CreateModule({ Name = 'FlaglessHighjump', Function = function(callback) if callback then old = bedwars.SwordController.isClickingTooFast bedwars.SwordController.isClickingTooFast = function(self) self.lastSwing = os.clock() return false end else bedwars.SwordController.isClickingTooFast = old end end, Tooltip = 'Worst Anticheat LOL (uses jump power)' }) end)
+
+
 															
 run(function()
 	local FastBreak
