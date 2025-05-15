@@ -1769,6 +1769,26 @@ run(function()
 end)
 	
 run(function()
+	local old
+	
+	vape.Categories.Blatant:CreateModule({
+		Name = 'Flagless 400 Highjump',
+		Function = function(callback)
+			if callback then
+				old = bedwars.SwordController.isClickingTooFast
+				bedwars.SwordController.isClickingTooFast = function(self)
+					self.lastSwing = os.clock()
+					return false
+				end
+			else
+				bedwars.SwordController.isClickingTooFast = old
+			end
+		end,
+		Tooltip = 'Worst Anticheat LOL'
+	})
+end)
+															
+run(function()
 	local FastBreak
 	local Time
 	
