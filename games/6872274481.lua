@@ -1771,7 +1771,7 @@ end)
 run(function()
 	local old
 	
-	vape.Categories.Blatant:CreateModule({
+	Flagless 400 Highjump = vape.Categories.Blatant:CreateModule({({
 		Name = 'Flagless 400 Highjump',
 		Function = function(callback)
 			if callback then
