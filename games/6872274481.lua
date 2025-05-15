@@ -1831,7 +1831,48 @@ run(function()
     })
 end)
 
-															
+run(function()
+    MageAnimation = vape.Categories.Blatant:CreateModule({
+        Name = 'MageAnimation',
+        Function = function(callback)
+            local packName = "Mage"
+            local defaultAnimateScript
+
+            if callback then
+                -- Save current Animate script for restoration
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local animate = character:FindFirstChild("Animate")
+
+                if animate then
+                    defaultAnimateScript = animate:Clone()
+                end
+
+                -- Set animation pack (make sure case is correct)
+                getgenv().pack = packName
+
+                -- Load animation changer script
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Mautiku/Mautiku/refs/heads/main/AnimationCHANGER.txt", true))()
+            else
+                -- Restore default animation
+                local player = game.Players.LocalPlayer
+                local character = player.Character
+
+                if character and defaultAnimateScript then
+                    local existingAnimate = character:FindFirstChild("Animate")
+                    if existingAnimate then
+                        existingAnimate:Destroy()
+                    end
+
+                    defaultAnimateScript.Parent = character
+                    defaultAnimateScript.Disabled = false
+                end
+            end
+        end,
+        Tooltip = "Mage Animation Toggle"
+    })
+end)
+																	
 run(function()
 	local FastBreak
 	local Time
