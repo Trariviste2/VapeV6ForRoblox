@@ -1769,7 +1769,7 @@ run(function()
 end)
 	
 run(function() 
-FlaglessHighjump = vape.Categories.Blatant:CreateModule({ Name = 'FlaglessHighjump', Function = function(callback) if callback then local player = game.Players.LocalPlayer local character = player.Character or player.CharacterAdded:Wait() local humanoid = character:WaitForChild("Humanoid") humanoid.UseJumpPower = true humanoid.JumpPower = 100 end end, Tooltip = 'Worst Anticheat LOL (uses jump power)' }) end)
+FlaglessHighjump = vape.Categories.Blatant:CreateModule({ Name = 'FlaglessHighjump', Function = function(callback) if callback then local player = game.Players.LocalPlayer local character = player.Character or player.CharacterAdded:Wait() local humanoid = character:WaitForChild("Humanoid") humanoid.UseJumpPower = true humanoid.JumpPower = 270 end end, Tooltip = 'Worst Anticheat LOL (uses jump power)' }) end)
 
 run(function()
     local Players = game:GetService("Players")
