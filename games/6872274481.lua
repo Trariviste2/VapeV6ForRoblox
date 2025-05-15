@@ -1768,11 +1768,11 @@ run(function()
 	})
 end)
 	
-
-run(function()	
+run(function()
 	
-	Flagless 400 Highjump = vape.Categories.Blatant:CreateModule({({
-		Name = 'Flagless 400 Highjump',
+	
+	400Highjump = vape.Categories.Blatant:CreateModule({({
+		Name = '400Highjump',
 		Function = function(callback)
 			if callback then
 				old = bedwars.SwordController.isClickingTooFast
