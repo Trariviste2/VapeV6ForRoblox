@@ -1905,7 +1905,86 @@ run(function()
         Tooltip = "Mage Animation Toggle"
     })
 end)
-																	
+
+run(function()
+    UltraFPSBoost = vape.Categories.Utility:CreateModule({
+        Name = 'UltraFPSBoost',
+        Function = function(callback)
+            local g = game
+            local w = g.Workspace
+            local l = g.Lighting
+            local t = w.Terrain
+            local players = g:GetService("Players")
+
+            if callback then
+                -- Apply FPS boost settings
+                t.WaterWaveSize = 0
+                t.WaterWaveSpeed = 0
+                t.WaterReflectance = 0
+                t.WaterTransparency = 0
+                l.GlobalShadows = false
+                l.FogEnd = 1e10
+                l.Brightness = 0
+
+                pcall(function()
+                    settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+                end)
+
+                local function isInAccessory(instance)
+                    return instance:FindFirstAncestorWhichIsA("Accessory") ~= nil
+                end
+
+                for _, v in ipairs(g:GetDescendants()) do
+                    if not isInAccessory(v) then
+                        if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+                            v.Material = Enum.Material.Plastic
+                            v.Reflectance = 0
+                        elseif v:IsA("MeshPart") then
+                            v.Material = Enum.Material.Plastic
+                            v.Reflectance = 0
+                            v.TextureID = ""
+                        elseif v:IsA("Decal") or v:IsA("Texture") then
+                            v.Transparency = 1
+                        elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+                            v.Lifetime = NumberRange.new(0)
+                        elseif v:IsA("Explosion") then
+                            v.BlastPressure = 1
+                            v.BlastRadius = 1
+                        elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") then
+                            v.Enabled = false
+                        end
+                    end
+                end
+
+                for _, e in ipairs(l:GetChildren()) do
+                    if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or 
+                       e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+                        e.Enabled = false
+                    end
+                end
+            else
+                -- Restore basic lighting and terrain settings
+                t.WaterWaveSize = 0.1
+                t.WaterWaveSpeed = 1
+                t.WaterReflectance = 1
+                t.WaterTransparency = 0.5
+                l.GlobalShadows = true
+                l.FogEnd = 1000
+                l.Brightness = 2
+
+                -- Re-enable post-processing
+                for _, e in ipairs(l:GetChildren()) do
+                    if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or 
+                       e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+                        e.Enabled = true
+                    end
+                end
+            end
+        end,
+        Tooltip = "Toggle ultra FPS boost on or off"
+    })
+end)
+																			
 run(function()
 	local FastBreak
 	local Time
