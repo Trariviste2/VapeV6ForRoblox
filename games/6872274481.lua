@@ -1984,7 +1984,24 @@ run(function()
         Tooltip = "Toggle ultra FPS boost on or off"
     })
 end)
-																			
+
+run(function()
+    PartyPopperExploit = vape.Categories.Utility:CreateModule({
+        Name = 'PartyPopperExploit',
+        Function = function(callback)
+            if callback then
+                task.spawn(function()
+                    while PartyPopperExploit.Enabled do
+                        bedwars.AbilityController:useAbility("PARTY_POPPER")
+                        task.wait()
+                    end
+                end)
+            end
+        end,
+        Tooltip = "Party1!1!1!1!1!"
+    })
+end)
+																				
 run(function()
 	local FastBreak
 	local Time
