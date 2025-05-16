@@ -1768,10 +1768,50 @@ run(function()
 	})
 end)
 	
-run(function() 
-FlaglessHighjump = vape.Categories.Blatant:CreateModule({ Name = 'FlaglessHighjump', Function = function(callback) if callback then local player = game.Players.LocalPlayer local character = player.Character or player.CharacterAdded:Wait() local humanoid = character:WaitForChild("Humanoid") humanoid.UseJumpPower = true humanoid.JumpPower = 205 end end, Tooltip = 'Worst Anticheat LOL (uses jump power)' }) end)
+run(function()
+    local connection
 
+    FlaglessHighjump = vape.Categories.Blatant:CreateModule({
+        Name = 'FlaglessHighjump',
+        Function = function(callback)
+            local player = game:GetService("Players").LocalPlayer
+            local defaultJumpPower = 50
 
+            local function applyHighJump()
+                local character = player.Character or player.CharacterAdded:Wait()
+                local humanoid = character:WaitForChild("Humanoid")
+                humanoid.UseJumpPower = true
+                humanoid.JumpPower = 205
+            end
+
+            local function resetJump()
+                local character = player.Character
+                if character then
+                    local humanoid = character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.JumpPower = defaultJumpPower
+                    end
+                end
+            end
+
+            if callback then
+                applyHighJump()
+                connection = player.CharacterAdded:Connect(function()
+                    task.wait(0.1)
+                    applyHighJump()
+                end)
+            else
+                if connection then
+                    connection:Disconnect()
+                    connection = nil
+                end
+                resetJump()
+            end
+        end,
+        Tooltip = 'Bedwars has the worst AC LOL'
+    })
+end)
+															
 run(function()
     local inputService = game:GetService("UserInputService")
     local runService = game:GetService("RunService")
