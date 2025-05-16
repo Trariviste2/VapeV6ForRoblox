@@ -2152,7 +2152,30 @@ run(function()
         Tooltip = "Free Nightmare emote!1!1!1!1"
     })
 end)
-																					
+
+run(function()
+    local runService = game:GetService("RunService")
+    local players = game:GetService("Players")
+    local lplr = players.LocalPlayer
+
+    local NoNameTag = vape.Categories.Utility:CreateModule({
+        Name = 'NoNameTag',
+        Function = function(callback)
+            if callback then
+                NoNameTag:Clean(runService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if lplr.Character and lplr.Character:FindFirstChild("Head") and lplr.Character.Head:FindFirstChild("Nametag") then
+                            lplr.Character.Head.Nametag:Destroy()
+                        end
+                    end)
+                end))
+            end
+        end,
+        Tooltip = "Client Sided",
+        Default = false
+    })
+end)
+																						
 run(function()
 	local FastBreak
 	local Time
